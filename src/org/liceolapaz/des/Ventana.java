@@ -11,11 +11,13 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 
 public class Ventana extends JFrame {
+	public String perdida = "El texto no guardado se perderá. ¿Desea continuar?";
 	public Ventana() {
 		super("Documento nuevo");
 		setSize(1024, 768);
@@ -93,7 +95,24 @@ public class Ventana extends JFrame {
 		archivoNuevo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Funciona");
+				pregunta();
+			}
+			
+			public void pregunta() {
+				int respuesta = JOptionPane.showConfirmDialog(Ventana.this, perdida,
+							"Nuevo documento", JOptionPane.YES_NO_OPTION);
+					if (respuesta == JOptionPane.YES_OPTION) {
+						archivoNuevo();
+					} else {
+						System.exit(0);
+					}
+				}
+			
+			public void archivoNuevo() {
+				JPanel panel = new JPanel();
+				panel.setBackground(Color.BLACK);
+				panel.setForeground(Color.PINK);
+				add(panel);
 			}
 		
 		});
