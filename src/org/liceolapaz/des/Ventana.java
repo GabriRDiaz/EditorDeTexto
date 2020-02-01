@@ -1,18 +1,26 @@
+
 package org.liceolapaz.des;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridBagLayout;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 
@@ -110,9 +118,25 @@ public class Ventana extends JFrame {
 			
 			public void archivoNuevo() {
 				JPanel panel = new JPanel();
+				panel.setLayout(new GridBagLayout());
 				panel.setBackground(Color.BLACK);
 				panel.setForeground(Color.PINK);
 				add(panel);
+				revalidate();
+				textArea();
+				revalidate();
+			}
+
+			private void textArea() {
+				JLabel lbTexto = new JLabel("Editor de texto de polla:");
+				lbTexto.setBounds(20,20,512,20);
+				lbTexto.setForeground(Color.WHITE);
+				add(lbTexto);
+				JTextArea txt = new JTextArea();
+				txt.setBackground(Color.BLACK);
+				txt.setBounds(512,334,1024,768);
+				txt.setForeground(Color.MAGENTA);
+				add(txt);
 			}
 		
 		});
