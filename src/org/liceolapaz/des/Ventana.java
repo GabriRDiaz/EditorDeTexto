@@ -3,6 +3,8 @@ package org.liceolapaz.des;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
@@ -19,6 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -33,6 +36,7 @@ public class Ventana extends JFrame {
 		setResizable(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		crearBarra();
+		
 	}
 	
 	private void crearBarra() {
@@ -118,27 +122,39 @@ public class Ventana extends JFrame {
 			
 			public void archivoNuevo() {
 				JPanel panel = new JPanel();
-				panel.setLayout(new GridBagLayout());
 				panel.setBackground(Color.BLACK);
 				panel.setForeground(Color.PINK);
+				panel.setLayout(new BorderLayout());
+				panel.add(lbEdTxt(), BorderLayout.PAGE_START);
+				panel.add(textArea(), BorderLayout.CENTER);
+				// panel.add(contadorLineas(), BorderLayout.PAGE_END)
 				add(panel);
 				revalidate();
-				textArea();
-				revalidate();
+			}
+			private void contadorLineas() {
+				
 			}
 
-			private void textArea() {
-				JLabel lbTexto = new JLabel("Editor de texto de polla:");
-				lbTexto.setBounds(20,20,512,20);
+			private JLabel lbEdTxt() {
+				JLabel lbTexto = new JLabel("Editor de texto");
+				lbTexto.setHorizontalAlignment(JLabel.CENTER);
 				lbTexto.setForeground(Color.WHITE);
-				add(lbTexto);
+				return lbTexto;
+			}
+			
+			private JScrollPane textArea() {
 				JTextArea txt = new JTextArea();
 				txt.setBackground(Color.BLACK);
-				txt.setBounds(512,334,1024,768);
 				txt.setForeground(Color.MAGENTA);
-				add(txt);
+				txt.setLineWrap(true);
+				txt.setFont(fuente());
+				JScrollPane scroll = new JScrollPane(txt);
+				return scroll;
 			}
-		
+			private Font fuente() {
+				Font fuente = new Font("Default", 1, 15);
+				return fuente;
+			}
 		});
 		setJMenuBar(barraMenu);
 }
