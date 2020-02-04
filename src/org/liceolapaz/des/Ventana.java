@@ -28,7 +28,8 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 
 public class Ventana extends JFrame {
-	public String perdida = "El texto no guardado se perderá. ¿Desea continuar?";
+	public final String PERDIDA = "El texto no guardado se perderá. ¿Desea continuar?";
+	private JTextArea txt;
 	public Ventana() {
 		super("Documento nuevo");
 		setSize(1024, 768);
@@ -36,10 +37,9 @@ public class Ventana extends JFrame {
 		setResizable(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		crearBarra();
-		
 	}
 	
-	private void crearBarra() {
+	public void crearBarra() {
 		JMenuBar barraMenu = new JMenuBar();
 		add(barraMenu);
 		//ARCHIVO
@@ -95,13 +95,12 @@ public class Ventana extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Funciona");
+				System.out.println(txt.getText());
 			}
 		});
 		archivoAbrir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Funciona");
 			}
 		});
 		archivoNuevo.addActionListener(new ActionListener() {
@@ -111,7 +110,7 @@ public class Ventana extends JFrame {
 			}
 			
 			public void pregunta() {
-				int respuesta = JOptionPane.showConfirmDialog(Ventana.this, perdida,
+				int respuesta = JOptionPane.showConfirmDialog(Ventana.this, PERDIDA,
 							"Nuevo documento", JOptionPane.YES_NO_OPTION);
 					if (respuesta == JOptionPane.YES_OPTION) {
 						archivoNuevo();
@@ -119,43 +118,35 @@ public class Ventana extends JFrame {
 						System.exit(0);
 					}
 				}
-			
-			public void archivoNuevo() {
-				JPanel panel = new JPanel();
-				panel.setBackground(Color.BLACK);
-				panel.setForeground(Color.PINK);
-				panel.setLayout(new BorderLayout());
-				panel.add(lbEdTxt(), BorderLayout.PAGE_START);
-				panel.add(textArea(), BorderLayout.CENTER);
-				// panel.add(contadorLineas(), BorderLayout.PAGE_END)
-				add(panel);
-				revalidate();
-			}
-			private void contadorLineas() {
-				
-			}
-
-			private JLabel lbEdTxt() {
-				JLabel lbTexto = new JLabel("Editor de texto");
-				lbTexto.setHorizontalAlignment(JLabel.CENTER);
-				lbTexto.setForeground(Color.WHITE);
-				return lbTexto;
-			}
-			
-			private JScrollPane textArea() {
-				JTextArea txt = new JTextArea();
-				txt.setBackground(Color.BLACK);
-				txt.setForeground(Color.MAGENTA);
-				txt.setLineWrap(true);
-				txt.setFont(fuente());
-				JScrollPane scroll = new JScrollPane(txt);
-				return scroll;
-			}
-			private Font fuente() {
-				Font fuente = new Font("Default", 1, 15);
-				return fuente;
-			}
 		});
 		setJMenuBar(barraMenu);
 }
+	private void archivoNuevo() {
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.BLACK);
+		panel.setForeground(Color.PINK);
+		panel.setLayout(new BorderLayout());
+		panel.add(lbEdTxt(), BorderLayout.PAGE_START);
+		txt = new JTextArea();
+		txt.setBackground(Color.BLACK);
+		txt.setForeground(Color.MAGENTA);
+		txt.setLineWrap(true);
+		txt.setFont(fuente());
+		JScrollPane scroll = new JScrollPane(txt);
+		panel.add(scroll, BorderLayout.CENTER);
+		add(panel);
+		revalidate();
+	}
+	
+	private JLabel lbEdTxt() {
+		JLabel lbTexto = new JLabel("Editor de texto");
+		lbTexto.setHorizontalAlignment(JLabel.CENTER);
+		lbTexto.setForeground(Color.WHITE);
+		return lbTexto;
+	}
+	
+	private Font fuente() {
+		Font fuente = new Font("Default", 1, 15);
+		return fuente;
+	}
 }
