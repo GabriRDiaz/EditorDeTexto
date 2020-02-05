@@ -1,4 +1,3 @@
-
 package org.liceolapaz.des;
 
 import java.awt.BorderLayout;
@@ -10,7 +9,14 @@ import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -30,6 +36,8 @@ import javax.swing.border.LineBorder;
 public class Ventana extends JFrame {
 	public final String PERDIDA = "El texto no guardado se perderá. ¿Desea continuar?";
 	private JTextArea txt;
+	String fichero = "";
+	JPanel panel = null;
 	public Ventana() {
 		super("Documento nuevo");
 		setSize(1024, 768);
@@ -81,7 +89,7 @@ public class Ventana extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);				
+				salida();
 			}
 		});
 		archivoGuardarAs.addActionListener(new ActionListener() {
@@ -101,28 +109,45 @@ public class Ventana extends JFrame {
 		archivoAbrir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				leerArch();
+				plasmarArch();
 			}
 		});
 		archivoNuevo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				pregunta();
+				archivoNuevo();
 			}
-			
-			public void pregunta() {
-				int respuesta = JOptionPane.showConfirmDialog(Ventana.this, PERDIDA,
-							"Nuevo documento", JOptionPane.YES_NO_OPTION);
-					if (respuesta == JOptionPane.YES_OPTION) {
-						archivoNuevo();
-					} else {
-						System.exit(0);
-					}
-				}
 		});
 		setJMenuBar(barraMenu);
 }
+	private String leerArch() {
+        final String ABRIR = "El texto no guardado se perderá. ¿Quiere abrir un documento?";
+        int respuesta = JOptionPane.showConfirmDialog(Ventana.this, ABRIR,
+				"Abrir documento", JOptionPane.YES_NO_OPTION);
+		if (respuesta == JOptionPane.YES_OPTION) {
+			String openPath=JOptionPane.showInputDialog(Ventana.this,"Escriba la ruta completa","Abrir archivo", JOptionPane.QUESTION_MESSAGE);
+			
+			try {
+
+			FileReader fr = new FileReader(openPath);
+			BufferedReader br = new BufferedReader(fr);
+			String s;
+			while((s = br.readLine()) != null) {
+			fichero += s;
+			
+			}
+			br.close();
+			} catch(java.io.FileNotFoundException fnfex) {
+
+			System.out.println("Archivo no encontrado: " + fnfex);
+
+			} catch(java.io.IOException ioex) {}
+	}
+		return fichero;	
+}
 	private void archivoNuevo() {
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBackground(Color.BLACK);
 		panel.setForeground(Color.PINK);
 		panel.setLayout(new BorderLayout());
@@ -137,7 +162,24 @@ public class Ventana extends JFrame {
 		add(panel);
 		revalidate();
 	}
+	private void plasmarArch() {
+		if(panel == null) {
+			archivoNuevo();
+			txt.setText(fichero);
+		}else {
+		txt.setText(fichero);
+		}
+	}
 	
+	
+	private void salida() {
+        final String SALIR = "El texto no guardado se perderá. ¿Quiere salir?";
+    	int respuesta = JOptionPane.showConfirmDialog(Ventana.this, SALIR,
+				"Nuevo documento", JOptionPane.YES_NO_OPTION);
+		if (respuesta == JOptionPane.YES_OPTION) {
+			System.exit(0);
+	}
+	}
 	private JLabel lbEdTxt() {
 		JLabel lbTexto = new JLabel("Editor de texto");
 		lbTexto.setHorizontalAlignment(JLabel.CENTER);
