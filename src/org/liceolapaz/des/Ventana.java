@@ -10,10 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -38,6 +41,7 @@ public class Ventana extends JFrame {
 	private JTextArea txt;
 	String fichero = "";
 	JPanel panel = null;
+	JScrollPane scroll = null;
 	public Ventana() {
 		super("Documento nuevo");
 		setSize(1024, 768);
@@ -103,7 +107,8 @@ public class Ventana extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(txt.getText());
+				String openPath = path();
+				guardar(openPath);
 			}
 		});
 		archivoAbrir.addActionListener(new ActionListener() {
@@ -116,11 +121,39 @@ public class Ventana extends JFrame {
 		archivoNuevo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				archivoNuevo();
+				resetNuevo();
 			}
 		});
 		setJMenuBar(barraMenu);
 }
+	protected String path() {
+		String openPath=JOptionPane.showInputDialog(Ventana.this,"Escriba la ruta completa","Guardar archivo", JOptionPane.QUESTION_MESSAGE);
+		return openPath;
+	}
+
+	protected void guardar(String path) {
+		BufferedWriter writer = null;
+		try
+		{
+		    writer = new BufferedWriter(new FileWriter(path));
+		    writer.write(txt.getText());
+		}
+		catch ( IOException e)
+		{
+		}
+		finally
+		{
+		    try
+		    {
+		        if ( writer != null)
+		        writer.close( );
+		    }
+		    catch ( IOException e)
+		    {
+		    }
+		}	
+	}
+
 	private String leerArch() {
         final String ABRIR = "El texto no guardado se perderá. ¿Quiere abrir un documento?";
         int respuesta = JOptionPane.showConfirmDialog(Ventana.this, ABRIR,
@@ -157,18 +190,14 @@ public class Ventana extends JFrame {
 		txt.setForeground(Color.MAGENTA);
 		txt.setLineWrap(true);
 		txt.setFont(fuente());
-		JScrollPane scroll = new JScrollPane(txt);
+		scroll = new JScrollPane(txt);
 		panel.add(scroll, BorderLayout.CENTER);
 		add(panel);
 		revalidate();
 	}
 	private void plasmarArch() {
-		if(panel == null) {
-			archivoNuevo();
+			resetNuevo();
 			txt.setText(fichero);
-		}else {
-		txt.setText(fichero);
-		}
 	}
 	
 	
@@ -190,5 +219,13 @@ public class Ventana extends JFrame {
 	private Font fuente() {
 		Font fuente = new Font("Default", 1, 15);
 		return fuente;
+	}
+	private void resetNuevo() {
+		if(panel != null) {
+			panel.remove(scroll);
+			archivoNuevo();
+		} else {
+		archivoNuevo();
+		}
 	}
 }
