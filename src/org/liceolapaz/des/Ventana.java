@@ -23,6 +23,7 @@ import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -49,6 +50,7 @@ public class Ventana extends JFrame {
 		setResizable(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		crearBarra();
+		archivoNuevo();
 	}
 	
 	public void crearBarra() {
@@ -100,7 +102,7 @@ public class Ventana extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Funciona");
+				saveAs();
 			}
 		});
 		archivoGuardar.addActionListener(new ActionListener() {
@@ -115,7 +117,6 @@ public class Ventana extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				leerArch();
-				plasmarArch();
 			}
 		});
 		archivoNuevo.addActionListener(new ActionListener() {
@@ -135,7 +136,7 @@ public class Ventana extends JFrame {
 		BufferedWriter writer = null;
 		try
 		{
-		    writer = new BufferedWriter(new FileWriter(path));
+		    writer = new BufferedWriter(new FileWriter(path+".txt"));
 		    writer.write(txt.getText());
 		}
 		catch ( IOException e)
@@ -168,7 +169,7 @@ public class Ventana extends JFrame {
 			String s;
 			while((s = br.readLine()) != null) {
 			fichero += s;
-			
+			plasmarArch();
 			}
 			br.close();
 			} catch(java.io.FileNotFoundException fnfex) {
@@ -186,6 +187,7 @@ public class Ventana extends JFrame {
 		panel.setLayout(new BorderLayout());
 		panel.add(lbEdTxt(), BorderLayout.PAGE_START);
 		txt = new JTextArea();
+		txt.setCaretColor(Color.WHITE);
 		txt.setBackground(Color.BLACK);
 		txt.setForeground(Color.MAGENTA);
 		txt.setLineWrap(true);
@@ -196,10 +198,31 @@ public class Ventana extends JFrame {
 		revalidate();
 	}
 	private void plasmarArch() {
-			resetNuevo();
+		if(panel != null) {
+			remove(panel);
+			archivoNuevo();
+		} else {
+		remove(panel);
+		archivoNuevo();
+		}
+			txt.setText("");
 			txt.setText(fichero);
 	}
 	
+	public void saveAs() {
+	    JFileChooser chooser = new JFileChooser();
+	    chooser.setCurrentDirectory(new File("/home/gabriel/Desktop"));
+	    int retrival = chooser.showSaveDialog(null);
+	    if (retrival == JFileChooser.APPROVE_OPTION) {
+	        try {
+	            FileWriter writer = new FileWriter(chooser.getSelectedFile()+".txt");
+			    writer.write(txt.getText());
+			    writer.flush();
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	}
 	
 	private void salida() {
         final String SALIR = "El texto no guardado se perderá. ¿Quiere salir?";
@@ -221,11 +244,16 @@ public class Ventana extends JFrame {
 		return fuente;
 	}
 	private void resetNuevo() {
-		if(panel != null) {
-			panel.remove(scroll);
+        final String SALIR = "El texto no guardado se perderá. ¿Quiere abrir un nuevo documento?";
+    	int respuesta = JOptionPane.showConfirmDialog(Ventana.this, SALIR,
+				"Nuevo documento", JOptionPane.YES_NO_OPTION);
+		if (respuesta == JOptionPane.YES_OPTION) {
+			if(panel != null) {
+				remove(panel);
+				archivoNuevo();
+			} else {
 			archivoNuevo();
-		} else {
-		archivoNuevo();
-		}
+			}
+	}
 	}
 }
