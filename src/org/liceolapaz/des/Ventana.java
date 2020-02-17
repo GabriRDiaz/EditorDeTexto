@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -53,30 +54,35 @@ public class Ventana extends JFrame {
 		
 		//Archivo --> Nuevo
 		JMenuItem archivoNuevo = new JMenuItem("Nuevo");
+		archivoNuevo.setIcon(new ImageIcon(getClass().getResource("/nuevo.png")));
 		archivoNuevo.setMnemonic(KeyEvent.VK_N);
 		archivoNuevo.setAccelerator(KeyStroke.getKeyStroke("ctrl N"));
 		menuArchivo.add(archivoNuevo);
 		
 		//Archivo --> Abrir
 		JMenuItem archivoAbrir = new JMenuItem("Abrir");
+		archivoAbrir.setIcon(new ImageIcon(getClass().getResource("/abrir.png")));
 		archivoAbrir.setMnemonic(KeyEvent.VK_G);
 		archivoAbrir.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
 		menuArchivo.add(archivoAbrir);
 		
 		//Archivo --> Guardar
 		JMenuItem archivoGuardar = new JMenuItem("Guardar");
+		archivoGuardar.setIcon(new ImageIcon(getClass().getResource("/guardar.png")));
 		archivoGuardar.setMnemonic(KeyEvent.VK_S);
 		archivoGuardar.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
 		menuArchivo.add(archivoGuardar);
 		
 		//Archivo --> Guardar como
 		JMenuItem archivoGuardarAs = new JMenuItem("Guardar como");
+		archivoGuardarAs.setIcon(new ImageIcon(getClass().getResource("/guardarComo.png")));
 		archivoGuardarAs.setMnemonic(KeyEvent.VK_G);
 		archivoGuardarAs.setAccelerator(KeyStroke.getKeyStroke("ctrl shift S"));
 		menuArchivo.add(archivoGuardarAs);
 		
 		//Archivo --> Salir
 		JMenuItem archivoSalir = new JMenuItem("Salir");
+		archivoSalir.setIcon(new ImageIcon(getClass().getResource("/salir.png")));
 		archivoSalir.setMnemonic(KeyEvent.VK_L);
 		archivoSalir.setAccelerator(KeyStroke.getKeyStroke("ctrl L"));
 		menuArchivo.add(archivoSalir);
