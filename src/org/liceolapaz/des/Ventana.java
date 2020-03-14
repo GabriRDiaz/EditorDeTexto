@@ -105,8 +105,8 @@ public class Ventana extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String openPath = path();
-				guardar(openPath);
+				String savePath = path();
+				guardar(savePath);
 			}
 		});
 		archivoAbrir.addActionListener(new ActionListener() {
@@ -124,15 +124,15 @@ public class Ventana extends JFrame {
 		setJMenuBar(barraMenu);
 }
 	protected String path() {
-		 final String ABRIR = "El texto no guardado se perderá. ¿Quiere abrir un documento?";
-	        int respuesta = JOptionPane.showConfirmDialog(Ventana.this, ABRIR,
+		 final String GUARDAR = "¿Desea guardar el documento?";
+	        int respuesta = JOptionPane.showConfirmDialog(Ventana.this, GUARDAR,
 					"Abrir documento", JOptionPane.YES_NO_OPTION);
 			if (respuesta == JOptionPane.YES_OPTION) {
 				String openPath=JOptionPane.showInputDialog(Ventana.this,"Escriba la ruta completa","Guardar archivo", JOptionPane.QUESTION_MESSAGE);
 				return openPath;
 		}	return null;
 	}
-
+	
 	protected void guardar(String path) {
 		BufferedWriter writer = null;
 		try
@@ -159,15 +159,10 @@ public class Ventana extends JFrame {
 	private String leerArch() {
         final String ABRIR = "El texto no guardado se perderá. ¿Quiere abrir un documento?";
         int respuesta = JOptionPane.showConfirmDialog(Ventana.this, ABRIR,
-				"Abrir documento", JOptionPane.YES_NO_OPTION);
+				"Entrada", JOptionPane.YES_NO_OPTION);
 		if (respuesta == JOptionPane.YES_OPTION) {
 			String openPath=JOptionPane.showInputDialog(Ventana.this,"Escriba la ruta completa","Abrir archivo", JOptionPane.QUESTION_MESSAGE);
-			String ext = "";
-			int i = openPath.lastIndexOf('.');
-			if (i >= 0) {
-			    ext = openPath.substring(i+1);
-			}
-			if(ext == "txt") {
+			if(openPath.endsWith(".txt")) {
 			try {
 			FileReader fr = new FileReader(openPath);
 			BufferedReader br = new BufferedReader(fr);
